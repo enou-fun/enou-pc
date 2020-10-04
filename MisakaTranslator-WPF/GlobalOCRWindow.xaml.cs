@@ -15,6 +15,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using Newtonsoft.Json.Linq;
 using OCRLibrary;
 using TranslatorLibrary;
 
@@ -87,7 +88,8 @@ namespace MisakaTranslator_WPF
                 String web = res.Replace("\n", "%20").Replace(" ", "%20").Replace("\t", "%20").Replace("\r", "%20");
                 String enouServer = res.Replace("\n", "").Replace(" ", "").Replace("\t", "").Replace("\r", "");
                 SearchOnWeb(web);
-                SendWordToEnouServerAsync(enouServer);
+                long wordId = SendWordToEnouServerGetId(enouServer);
+                ModifyWordAsync(wordId, enouServer );
             }
         }
  
@@ -112,12 +114,12 @@ namespace MisakaTranslator_WPF
 
         }
 
-        private async Task SendWordToEnouServerAsync(string word)
+        private long SendWordToEnouServerGetId(string word)
         {
             bool hasToken = !Common.appSettings.EnouAccountToken.Equals(String.Empty);
             if(!hasToken)
             {
-                await ChechAndGetTokenAsync();
+                ChechAndGetTokenAsync();
             }
 
             String jsonWord = "{\"word\":\"" + word + "\"}";
@@ -138,6 +140,7 @@ namespace MisakaTranslator_WPF
                 st.Write(byteArray, 0, byteArray.Length);
 
             WebResponse webResponse= null;
+            long retWordId = 0;
             try
             {
                 webResponse = request.GetResponse();
@@ -149,14 +152,14 @@ namespace MisakaTranslator_WPF
                     var response = ex.Response as HttpWebResponse;
                     if (response != null && response.StatusCode == HttpStatusCode.Unauthorized)
                     {
-                        await ChechAndGetTokenAsync();
+                        ChechAndGetTokenAsync();
                         if(Common.appSettings.EnouAccountToken == null)
                         {
                             // todo login fail, throw exception
                         }
                         else
                         {
-                            SendWordToEnouServerAsync(word);
+                            return SendWordToEnouServerGetId(word);
                         }
                     }
                 }
@@ -165,13 +168,33 @@ namespace MisakaTranslator_WPF
             {
                 if(webResponse != null)
                 {
+                    Stream myResponseStream = webResponse.GetResponseStream();
+                    StreamReader myStreamReader = new StreamReader(myResponseStream, Encoding.UTF8);
+                    string retString = myStreamReader.ReadToEnd();
                     webResponse.Close();
+
+                    JObject jObject = JObject.Parse(retString);
+                    File.WriteAllText("log.txt","jObject is " + jObject.ToString());
+                    retWordId = long.Parse( jObject["id"].ToString());
                 }
             }
 
+            return retWordId;
         }
 
-        private async Task ChechAndGetTokenAsync()
+        private void ModifyWordAsync(long wordId, string word)
+        {
+
+            Point point = new Point { X = System.Windows.Forms.Control.MousePosition.X, Y = System.Windows.Forms.Control.MousePosition.Y };
+            ModifyWordWindow modifyWordWindow = new ModifyWordWindow() { Top = point.Y, Left = point.X, Topmost = true };
+            modifyWordWindow.WordId = wordId;
+            modifyWordWindow.Word = word;
+
+            modifyWordWindow.Show();
+        } 
+
+
+        private void ChechAndGetTokenAsync()
         {
 
             String account = Common.appSettings.EnouAccount;
@@ -192,7 +215,7 @@ namespace MisakaTranslator_WPF
                 HttpResponseMessage response = client.PostAsync(uri, content).Result;
                 if (response.IsSuccessStatusCode)
                 {
-                    string jsonString = await response.Content.ReadAsStringAsync();
+                    string jsonString = response.Content.ReadAsStringAsync().Result;
                     Console.WriteLine("token is " + jsonString);
                     Common.appSettings.EnouAccountToken = jsonString;
                 }
