@@ -31,9 +31,19 @@ namespace MisakaTranslator_WPF
             InitializeComponent();
             Initialize(settings);
 
+
+            ThreadPool.RegisterWaitForSingleObject(App.ProgramStarted, OnProgramStarted, null, -1, false);
             //注册全局OCR热键
             this.SourceInitialized += new EventHandler(MainWindow_SourceInitialized);
         }
+
+        // 当收到第二个进程的通知时，显示窗体
+        void OnProgramStarted(object state, bool timeout)
+        {
+            this.Dispatcher.Invoke(() => { Visibility = Visibility.Visible; });
+         
+        }
+
 
         private static void InitializeLanguage()
         {

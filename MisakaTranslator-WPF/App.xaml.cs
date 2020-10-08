@@ -2,6 +2,7 @@
 using System.IO;
 using System.Reflection;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Threading;
@@ -10,8 +11,11 @@ namespace MisakaTranslator_WPF
 {
     public partial class App
     {
+
+        public static EventWaitHandle ProgramStarted;
         public App()
         {
+
             //注册开始和退出事件
             this.Startup += App_Startup;
             this.Exit += App_Exit;
@@ -25,6 +29,17 @@ namespace MisakaTranslator_WPF
             TaskScheduler.UnobservedTaskException += TaskScheduler_UnobservedTaskException;
             //非UI线程未捕获异常处理事件
             AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
+
+
+            bool createNew;
+            ProgramStarted = new EventWaitHandle(false, EventResetMode.AutoReset, "MyStartEvent", out createNew);
+
+            // 如果该命名事件已经存在(存在有前一个运行实例)，则发事件通知并退出
+            if (!createNew)
+            {
+                ProgramStarted.Set();
+                this.Shutdown();
+            }
         }
 
         private void App_Exit(object sender, ExitEventArgs e)

@@ -24,9 +24,15 @@ namespace MisakaTranslator_WPF
         public long WordId { get; set; }
         public String Word { get; set; }
 
-        public ModifyWordWindow()
+        public ModifyWordWindow(Point mousePoint)
         {
             InitializeComponent();
+            this.Topmost = true;
+
+
+            this.Top = mousePoint.Y - this.textBoxWord.Margin.Top - this.textBoxWord.Height*2 ;
+            this.Left = mousePoint.X - this.textBoxWord.Margin.Left - this.textBoxWord.Width/2 -5;
+            this.textBoxWord.Focus();
         }
 
         private void SubmitButton_Click(object sender, RoutedEventArgs e)

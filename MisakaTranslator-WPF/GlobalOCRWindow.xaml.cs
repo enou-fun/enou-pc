@@ -85,6 +85,7 @@ namespace MisakaTranslator_WPF
             }
             else
             {
+                res = res.ToLower();
                 String web = res.Replace("\n", "%20").Replace(" ", "%20").Replace("\t", "%20").Replace("\r", "%20");
                 String enouServer = res.Replace("\n", "").Replace(" ", "").Replace("\t", "").Replace("\r", "");
                 SearchOnWeb(web);
@@ -186,7 +187,7 @@ namespace MisakaTranslator_WPF
         {
 
             Point point = new Point { X = System.Windows.Forms.Control.MousePosition.X, Y = System.Windows.Forms.Control.MousePosition.Y };
-            ModifyWordWindow modifyWordWindow = new ModifyWordWindow() { Top = point.Y, Left = point.X, Topmost = true };
+            ModifyWordWindow modifyWordWindow = new ModifyWordWindow(point); 
             modifyWordWindow.WordId = wordId;
             modifyWordWindow.Word = word;
 
