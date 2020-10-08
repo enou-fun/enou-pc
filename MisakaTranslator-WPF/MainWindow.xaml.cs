@@ -234,5 +234,10 @@ namespace MisakaTranslator_WPF
         private void ComicTransBtn_Click(object sender, RoutedEventArgs e)
         {
         }
+
+        private void ScrollViewer_Loaded(object sender, RoutedEventArgs e)
+        {
+            this.Visibility = Visibility.Collapsed;
+        }
     }
 }

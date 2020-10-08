@@ -34,16 +34,18 @@
         <Grid.RowDefinitions>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="839*"/>
+            <ColumnDefinition Width="103*"/>
         </Grid.ColumnDefinitions>
 
-        <hc:ScrollViewer Grid.Row="0" Grid.Column="1"  Margin="10,10,10,10.5" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Hidden" Orientation="Horizontal" Grid.ColumnSpan="2">
+        <hc:ScrollViewer Grid.Row="0"  Margin="10,10,10,11" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Hidden" Orientation="Horizontal" Grid.ColumnSpan="2" Loaded="ScrollViewer_Loaded">
             <hc:WaterfallPanel Name="GameLibraryPanel" VerticalAlignment="Center" HorizontalAlignment="Center" Height="250" Groups="2" Orientation="Vertical" hc:PanelElement.FluidMoveBehavior="{StaticResource BehaviorXY200}">
 
             </hc:WaterfallPanel>
         </hc:ScrollViewer>
 
-        
-        <StackPanel Orientation="Horizontal" Grid.Column="2">
+
+        <StackPanel Orientation="Horizontal" Grid.ColumnSpan="2">
 
             <Button fa:Awesome.Content="Book" Grid.Column="2" HorizontalAlignment="Left" VerticalAlignment="Bottom" Foreground="{DynamicResource MainBtnColor}" FontSize="40" Background="#01FFFFFF"  Height="Auto" Width="Auto"  Effect="{StaticResource EffectShadow5}" Click="ComicTransBtn_Click" Margin="20,0,0,0.5">
                 <hc:Poptip.Instance>
@@ -52,28 +54,28 @@
             </Button>
 
         </StackPanel>
-        
-        
-        <Button fa:Awesome.Content="Cog" Grid.Column="2" HorizontalAlignment="Right" VerticalAlignment="Bottom" Foreground="{DynamicResource MainBtnColor}" FontSize="40" Background="#01FFFFFF"  Height="Auto" Width="Auto"  Effect="{StaticResource EffectShadow5}" Click="SettingsBtn_Click" Margin="0,0,0,0.5">
+
+
+        <Button fa:Awesome.Content="Cog" Grid.Column="1" HorizontalAlignment="Right" VerticalAlignment="Bottom" Foreground="{DynamicResource MainBtnColor}" FontSize="40" Background="#01FFFFFF"  Height="Auto" Width="Auto"  Effect="{StaticResource EffectShadow5}" Click="SettingsBtn_Click" Margin="0,0,0,1">
             <hc:Poptip.Instance>
                 <hc:Poptip FontSize="15" Foreground="Black" FontFamily="微软雅黑" Content="{StaticResource MainWindow_Tip_Settings}" Placement="Left"/>
             </hc:Poptip.Instance>
         </Button>
 
-        <hc:Drawer Name="AddNewGameDrawer" ShowMode="Press" MaskCanClose="True" Dock="Top">
-            
-        <StackPanel Orientation="Vertical" Background="{DynamicResource TranslateWindowBackground}">
-            <Border Padding="30" Effect="{StaticResource EffectShadow3}">
-                <hc:ButtonGroup Orientation="Horizontal">
+        <hc:Drawer Name="AddNewGameDrawer" ShowMode="Press" MaskCanClose="True" Dock="Top" Grid.ColumnSpan="2">
+
+            <StackPanel Orientation="Vertical" Background="{DynamicResource TranslateWindowBackground}">
+                <Border Padding="30" Effect="{StaticResource EffectShadow3}">
+                    <hc:ButtonGroup Orientation="Horizontal">
                     </hc:ButtonGroup>
-            </Border>
-        </StackPanel>
+                </Border>
+            </StackPanel>
 
         </hc:Drawer>
 
 
 
-        <hc:Drawer Name="GameInfoDrawer" ShowMode="Press" MaskCanClose="True" Dock="Left">
+        <hc:Drawer Name="GameInfoDrawer" ShowMode="Press" MaskCanClose="True" Dock="Left" Grid.ColumnSpan="2">
             <Border Background="{DynamicResource TranslateWindowBackground}" Width="300" BorderBrush="{DynamicResource BorderBrush}">
                 <Grid>
                     <Grid.RowDefinitions>
@@ -91,8 +93,8 @@
 
                     <StackPanel Grid.Row="1">
                         <Border Padding="30">
-                        <hc:ButtonGroup Orientation="Vertical">
-                        </hc:ButtonGroup>
+                            <hc:ButtonGroup Orientation="Vertical">
+                            </hc:ButtonGroup>
                         </Border>
 
                     </StackPanel>
@@ -100,7 +102,7 @@
                 </Grid>
             </Border>
         </hc:Drawer>
-        <hc:NotifyIcon Token="MisakaTranslator" x:Name="NotifyIconContextContent" Text="HandyControl" IsBlink="False" Visibility="Visible"  Icon="pack://application:,,,/MisakaTranslator-WPF;component/logo.ico">
+        <hc:NotifyIcon Token="MisakaTranslator" x:Name="NotifyIconContextContent" Text="HandyControl" IsBlink="False" Visibility="Visible"  Icon="pack://application:,,,/MisakaTranslator-WPF;component/logo.ico" Grid.ColumnSpan="2">
             <hc:NotifyIcon.ContextContent>
                 <Border CornerRadius="4" Margin="10" Background="{DynamicResource RegionBrush}" Effect="{StaticResource EffectShadow2}">
                     <StackPanel VerticalAlignment="Center" Margin="16">

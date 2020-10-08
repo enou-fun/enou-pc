@@ -40,6 +40,7 @@ namespace MisakaTranslator_WPF
                 ProgramStarted.Set();
                 this.Shutdown();
             }
+
         }
 
         private void App_Exit(object sender, ExitEventArgs e)
