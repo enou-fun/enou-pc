@@ -46,13 +46,7 @@
 
 
         <StackPanel Orientation="Horizontal" Grid.ColumnSpan="2">
-
-            <Button fa:Awesome.Content="Book" Grid.Column="2" HorizontalAlignment="Left" VerticalAlignment="Bottom" Foreground="{DynamicResource MainBtnColor}" FontSize="40" Background="#01FFFFFF"  Height="Auto" Width="Auto"  Effect="{StaticResource EffectShadow5}" Click="ComicTransBtn_Click" Margin="20,0,0,0.5">
-                <hc:Poptip.Instance>
-                    <hc:Poptip FontSize="15" Foreground="Black" FontFamily="微软雅黑" Content="{StaticResource MainWindow_Tip_ComicTrans}" Placement="Right"/>
-                </hc:Poptip.Instance>
-            </Button>
-
+    
         </StackPanel>
 
 

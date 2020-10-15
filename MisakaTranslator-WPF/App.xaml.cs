@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Config.Net;
+using System;
 using System.IO;
 using System.Reflection;
 using System.Text;
@@ -30,6 +31,7 @@ namespace MisakaTranslator_WPF
             //非UI线程未捕获异常处理事件
             AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
 
+            Common.appSettings = new ConfigurationBuilder<IAppSettings>().UseIniFile($"{Environment.CurrentDirectory}\\settings\\settings.ini").Build();
 
             bool createNew;
             ProgramStarted = new EventWaitHandle(false, EventResetMode.AutoReset, "MyStartEvent", out createNew);

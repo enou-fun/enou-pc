@@ -79,13 +79,11 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="AddOptWindow.xaml.cs">
-      <DependentUpon>AddOptWindow.xaml</DependentUpon>
+    <Compile Include="Tool\Common.cs" />
+    <Compile Include="Tool\HttpClientWrapper.cs" />
+    <Compile Include="LoginWindow.xaml.cs">
+      <DependentUpon>LoginWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ArtificialTransAddWindow.xaml.cs">
-      <DependentUpon>ArtificialTransAddWindow.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Common.cs" />
     <Compile Include="ModifyWordWindow.xaml.cs">
       <DependentUpon>ModifyWordWindow.xaml</DependentUpon>
     </Compile>
@@ -101,17 +99,8 @@
     <Compile Include="GuidePages\ChooseLanguagePage.xaml.cs">
       <DependentUpon>ChooseLanguagePage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="GuidePages\CompletationPage.xaml.cs">
-      <DependentUpon>CompletationPage.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="GuidePages\OCR\ChooseHandleFuncPage.xaml.cs">
-      <DependentUpon>ChooseHandleFuncPage.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="GuidePages\OCR\ChooseHotKeyPage.xaml.cs">
-      <DependentUpon>ChooseHotKeyPage.xaml</DependentUpon>
-    </Compile>
     <Compile Include="GuidePages\PageChangeRoutedEventArgs.cs" />
-    <Compile Include="IAppSettings.cs" />
+    <Compile Include="Tool\IAppSettings.cs" />
     <Compile Include="ScreenCaptureWindow.xaml.cs">
       <DependentUpon>ScreenCaptureWindow.xaml</DependentUpon>
     </Compile>
@@ -154,11 +143,8 @@
     <Compile Include="SettingsWindow.xaml.cs">
       <DependentUpon>SettingsWindow.xaml</DependentUpon>
     </Compile>
-    <Page Include="AddOptWindow.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="ArtificialTransAddWindow.xaml">
+    <Compile Include="Tool\Tools.cs" />
+    <Page Include="LoginWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -179,18 +165,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="GuidePages\ChooseLanguagePage.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="GuidePages\CompletationPage.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="GuidePages\OCR\ChooseHandleFuncPage.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="GuidePages\OCR\ChooseHotKeyPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -11,6 +11,7 @@ using Config.Net;
 using HandyControl.Controls;
 using KeyboardMouseHookLibrary;
 using OCRLibrary;
+using MessageBox = System.Windows.MessageBox;
 
 namespace MisakaTranslator_WPF
 {
@@ -26,10 +27,8 @@ namespace MisakaTranslator_WPF
             Instance = this;
             Common.mainWin = this;
 
-            var settings = new ConfigurationBuilder<IAppSettings>().UseJsonFile("settings/settings.json").Build();
             InitializeLanguage();
             InitializeComponent();
-            Initialize(settings);
 
 
             ThreadPool.RegisterWaitForSingleObject(App.ProgramStarted, OnProgramStarted, null, -1, false);
@@ -40,6 +39,7 @@ namespace MisakaTranslator_WPF
         // 当收到第二个进程的通知时，显示窗体
         void OnProgramStarted(object state, bool timeout)
         {
+            MessageBox.Show("已经打开一个进程");
             this.Dispatcher.Invoke(() => { Visibility = Visibility.Visible; });
          
         }
@@ -48,7 +48,6 @@ namespace MisakaTranslator_WPF
         private static void InitializeLanguage()
         {
             var appResource = Application.Current.Resources.MergedDictionaries;
-            Common.appSettings = new ConfigurationBuilder<IAppSettings>().UseIniFile($"{Environment.CurrentDirectory}\\settings\\settings.ini").Build();
             foreach (var item in appResource)
             {
                 if (item.Source.ToString().Contains("lang") && item.Source.ToString() != $@"lang/{Common.appSettings.AppLanguage}.xaml")
@@ -63,15 +62,6 @@ namespace MisakaTranslator_WPF
         public void CallBack()
         {
             Common.GlobalOCR();
-        }
-
-        private void Initialize(IAppSettings settings)
-        {
-            this.Resources["Foreground"] = (SolidColorBrush)(new BrushConverter().ConvertFrom(settings.ForegroundHex));
-            GameLibraryPanel_Init();
-            //先初始化这两个语言，用于全局OCR识别
-            Common.UsingDstLang = "zh";
-            Common.UsingSrcLang = "jp";
         }
 
         /// <summary>
@@ -191,7 +181,11 @@ namespace MisakaTranslator_WPF
             Instance.NotifyIconContextContent.Visibility = Visibility.Collapsed;
         }
 
-        private void ButtonPush_OnClick(object sender, RoutedEventArgs e) => NotifyIconContextContent.CloseContextControl();
+        private void ButtonPush_OnClick(object sender, RoutedEventArgs e)
+        {
+            NotifyIconContextContent.CloseContextControl();
+            this.Dispatcher.Invoke(() => { Visibility = Visibility.Visible; });
+        }
 
         /// <summary>
         /// 切换语言通用事件
@@ -218,17 +212,6 @@ namespace MisakaTranslator_WPF
 
         private void BlurWindow_ContentRendered(object sender, EventArgs e)
         {
-            List<string> res = Common.CheckUpdate();
-            if (res != null)
-            {
-                MessageBoxResult dr = HandyControl.Controls.MessageBox.Show(res[0] + "\n" + Application.Current.Resources["MainWindow_AutoUpdateCheck"].ToString(), "AutoUpdateCheck", MessageBoxButton.OKCancel);
-
-                if (dr == MessageBoxResult.OK)
-                {
-                    System.Diagnostics.Process.Start(res[1]);
-                }
-
-            }
         }
 
         private void ComicTransBtn_Click(object sender, RoutedEventArgs e)
@@ -237,7 +220,7 @@ namespace MisakaTranslator_WPF
 
         private void ScrollViewer_Loaded(object sender, RoutedEventArgs e)
         {
-            this.Visibility = Visibility.Collapsed;
+           // this.Visibility = Visibility.Collapsed;
         }
     }
 }

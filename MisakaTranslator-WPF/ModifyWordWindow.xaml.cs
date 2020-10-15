@@ -37,37 +37,12 @@ namespace MisakaTranslator_WPF
 
         private void SubmitButton_Click(object sender, RoutedEventArgs e)
         {
-            //todo submit the modify request 
-            // get the word first
-            //and send the http request to the server
-            String word = this.textBoxWord.Text;
-            String jsonWord = "{ \"id\":" + WordId + " , \"word\":\"" + word + "\"}";
-            HttpClient client = new HttpClient();
-
-            var request = new HttpRequestMessage()
-            {
-                RequestUri = new Uri(Common.appSettings.EnouServerWordApi),
-                Method = HttpMethod.Put,
-                Content = new StringContent(jsonWord, Encoding.UTF8, "application/json"),
-            };
-            request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-            request.Headers.Add("token", Common.appSettings.EnouAccountToken);
-
-            try
-            {
-                HttpResponseMessage response = client.SendAsync(request).Result;
-                if (response.IsSuccessStatusCode)
-                {
-                }
-            }
-            catch
-            {
-
-            }
-
+            HttpClientWrapper.ModifyWord(this.WordId, this.textBoxWord.Text);
 
             this.Close();
         }
+
+
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {

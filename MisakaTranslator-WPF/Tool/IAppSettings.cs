@@ -23,13 +23,6 @@ namespace MisakaTranslator_WPF
             set;
         }
 
-        [Option(Alias = "Enou.Password", DefaultValue = "")]
-        string EnouPassword
-        {
-            get;
-            set;
-        }
-        
         [Option(Alias = "Enou.WordApi", DefaultValue = "")]
         string EnouServerWordApi
         {
@@ -39,6 +32,13 @@ namespace MisakaTranslator_WPF
 
         [Option(Alias = "Enou.LoginApi", DefaultValue = "")]
         string EnouServerLoginApi
+        {
+            get;
+            set;
+        }
+
+        [Option(Alias = "Enou.TokenCheckApi", DefaultValue = "")]
+        string EnouServerTokenLoginCheckApi
         {
             get;
             set;
