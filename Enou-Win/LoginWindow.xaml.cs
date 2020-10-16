@@ -57,6 +57,8 @@ namespace Enou
             String password = this.passwordBox.Password;
 
 
+
+
             bool loginSucceed = false;
             if(Tools.HasToken)
             {
@@ -68,6 +70,7 @@ namespace Enou
             }
             if(loginSucceed)
             {
+                Common.appSettings.EnouAccount = account;
                 var mainWindow = new MainWindow();
                 mainWindow.Show();
                 this.Close();

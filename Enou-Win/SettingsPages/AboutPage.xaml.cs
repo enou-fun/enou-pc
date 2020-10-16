@@ -27,7 +27,7 @@ namespace Enou.SettingsPages
 
         private void BtnHelp_Click(object sender, RoutedEventArgs e)
         {
-            System.Diagnostics.Process.Start("https://www.enou.fun/");
+            System.Diagnostics.Process.Start("http://www.enou.fun/");
         }
 
         private void BtnGithub_Click(object sender, RoutedEventArgs e)

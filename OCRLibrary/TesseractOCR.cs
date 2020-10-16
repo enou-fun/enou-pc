@@ -10,13 +10,28 @@ namespace OCRLibrary
 {
     public class TesseractOCR : IOptChaRec
     {
-        public string srcLangCode;//OCR识别语言 jpn=日语 eng=英语
+        public string srcLangCode = "eng";//OCR识别语言 jpn=日语 eng=英语
         private TesseractEngine TessOCR;
         private string errorInfo;
 
         private IntPtr WinHandle;
         private Rectangle OCRArea;
         private bool isAllWin;
+
+        private static TesseractOCR instance;
+
+        public static TesseractOCR Instance
+        {
+            get
+            {
+                if(instance == null)
+                {
+                    instance = new TesseractOCR();
+                    instance.OCR_Init();
+                }
+                return instance;
+            }
+        }
 
         public string OCRProcess(Bitmap img)
         {

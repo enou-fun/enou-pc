@@ -40,24 +40,9 @@ namespace Enou
             string res = null;
             if (Common.appSettings.OCRsource == "TesseractOCR")
             {
-                ocr = new TesseractOCR();
-                if (ocr.OCR_Init("", "") != false)
-                {
-                    ocr.SetOCRSourceLang(Common.appSettings.GlobalOCRLang);
-                    res = ocr.OCRProcess(new System.Drawing.Bitmap(img));
-
-                    if (res != null)
-                    {
-                    }
-                    else
-                    {
-                        HandyControl.Controls.Growl.ErrorGlobal($"TesseractOCR {Application.Current.Resources["APITest_Error_Hint"]}\n{ocr.GetLastError()}");
-                    }
-                }
-                else
-                {
-                    HandyControl.Controls.Growl.ErrorGlobal($"TesseractOCR {Application.Current.Resources["APITest_Error_Hint"]}\n{ocr.GetLastError()}");
-                }
+                ocr = TesseractOCR.Instance;
+                ocr.SetOCRSourceLang(Common.appSettings.GlobalOCRLang);
+                res = ocr.OCRProcess(new System.Drawing.Bitmap(img));
             }
             else if (Common.appSettings.OCRsource == "BaiduOCR")
             {
