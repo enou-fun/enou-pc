@@ -145,7 +145,11 @@ namespace OCRLibrary
         public static Image GetAllWindow()
         {
 
-            int w = Screen.PrimaryScreen.Bounds.Width;
+            int w = 0;
+            foreach(Screen screen in Screen.AllScreens)
+            {
+                w += screen.Bounds.Size.Width;
+            }
             int h = Screen.PrimaryScreen.Bounds.Height;
 
             Bitmap bitmap = new Bitmap(w, h);

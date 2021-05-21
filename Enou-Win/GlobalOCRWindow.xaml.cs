@@ -72,12 +72,12 @@ namespace Enou
             }
             else
             {
-                res = res.ToLower();
+                res = res.ToLower().Replace(".","").Replace(",","").Replace("!","").Replace("\"","");
                 String web = res.Replace("\n", "%20").Replace(" ", "%20").Replace("\t", "%20").Replace("\r", "%20");
-                String enouServer = res.Replace("\n", "").Replace(" ", "").Replace("\t", "").Replace("\r", "");
+                String enouServer = res.Trim().Replace("\n", "").Replace("\t", "").Replace("\r", "");
                 SearchOnWeb(web);
-                long wordId = HttpClientWrapper.SendWordToEnouServerGetId(enouServer);
-                ModifyWordAsync(wordId, enouServer );
+                long wordId = HttpClientWrapper.SaveWordToEnouServerGetId(enouServer);
+                //ModifyWordAsync(wordId, enouServer );
             }
         }
  

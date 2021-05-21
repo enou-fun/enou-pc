@@ -50,20 +50,28 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BaiduGeneralOCR.cs" />
+    <Compile Include="BitmapRegion.cs" />
+    <Compile Include="BitmapUtil.cs" />
     <Compile Include="ImageProcFunc.cs" />
     <Compile Include="IOptChaRec.cs" />
     <Compile Include="OCRCommon.cs" />
+    <Compile Include="Point.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ScreenCapture.cs" />
-    <Compile Include="Tesseract5OCR.cs" />
     <Compile Include="TesseractOCR.cs" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Newtonsoft.Json">
       <Version>12.0.3</Version>
     </PackageReference>
+    <PackageReference Include="OpenCvSharp4">
+      <Version>4.5.2.20210404</Version>
+    </PackageReference>
+    <PackageReference Include="OpenCvSharp4.runtime.win">
+      <Version>4.5.2.20210404</Version>
+    </PackageReference>
     <PackageReference Include="Tesseract">
-      <Version>3.3.0</Version>
+      <Version>4.1.1</Version>
     </PackageReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

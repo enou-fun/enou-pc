@@ -252,7 +252,7 @@ namespace OCRLibrary
 
             using (MemoryStream stream = new MemoryStream())
             {
-                bitmap.Save(stream, ImageFormat.Png); //格式选Bmp时，不带透明度
+                bitmap.Save(stream, ImageFormat.Bmp); //格式选Bmp时，不带透明度
 
                 stream.Position = 0;
                 BitmapImage result = new BitmapImage();

@@ -13,63 +13,44 @@ namespace Enou
 {
     class HttpClientWrapper
     {
-        public static long SendWordToEnouServerGetId(string word)
+        public static long SaveWordToEnouServerGetId(string word)
         {
             String jsonWord = "{\"word\":\"" + word + "\"}";
-            Console.WriteLine(jsonWord);
-            byte[] byteArray = Encoding.UTF8.GetBytes(jsonWord);
-
             String token = Common.appSettings.EnouAccountToken;
-            Console.WriteLine(" SendWordToEnouServerAsync token is " + token);
 
-            String api = Common.appSettings.EnouServerWordApi;
-            WebRequest request = WebRequest.Create(api);
-            request.Method = "POST";
-            request.Headers.Add("token", token);
-            request.ContentType = "application/json";
-            request.ContentLength = byteArray.Length;
+            HttpClient client = new HttpClient();
+            client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+            var request = new HttpRequestMessage()
+            {
+                RequestUri = new Uri(Common.appSettings.EnouServerWordApi),
+                Method = HttpMethod.Post,
+                Content = new StringContent(jsonWord, Encoding.UTF8, "application/json"),
+            };
+            request.Headers.Add("token", Common.appSettings.EnouAccountToken);
+            request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
-            using (Stream st = request.GetRequestStream())
-                st.Write(byteArray, 0, byteArray.Length);
-
-            WebResponse webResponse = null;
             long retWordId = 0;
             try
             {
-                webResponse = request.GetResponse();
-            }
-            catch (WebException ex)
-            {
-                if (ex.Status == WebExceptionStatus.ProtocolError)
+                HttpResponseMessage response = client.SendAsync(request).Result;
+                if (response.IsSuccessStatusCode)
                 {
-                    var response = ex.Response as HttpWebResponse;
-                    if (response != null && response.StatusCode == HttpStatusCode.Unauthorized)
-                    {
-                        if (Common.appSettings.EnouAccountToken == null)
-                        {
-                            // todo open the login window
-                        }
-                        else
-                        {
-                            return SendWordToEnouServerGetId(word);
-                        }
-                    }
-                }
-            }
-            finally
-            {
-                if (webResponse != null)
-                {
-                    Stream myResponseStream = webResponse.GetResponseStream();
-                    StreamReader myStreamReader = new StreamReader(myResponseStream, Encoding.UTF8);
-                    string retString = myStreamReader.ReadToEnd();
-                    webResponse.Close();
+                    string jsonString = response.Content.ReadAsStringAsync().Result;
 
-                    JObject jObject = JObject.Parse(retString);
-                    File.WriteAllText("log.txt", "jObject is " + jObject.ToString());
+                    JObject jObject = JObject.Parse(jsonString);
+
+                    String wordStr = jObject["data"].ToString();
+                    JObject wordJObject = JObject.Parse(word);
+
                     retWordId = long.Parse(jObject["id"].ToString());
                 }
             }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                return 0;
+            }
+
 
             return retWordId;
         }
@@ -95,11 +76,15 @@ namespace Enou
                 {
                     string jsonString = response.Content.ReadAsStringAsync().Result;
                     Console.WriteLine("token is " + jsonString);
-                    Common.appSettings.EnouAccountToken = jsonString;
+
+                    JObject jObject = JObject.Parse(jsonString);
+                   
+                    Common.appSettings.EnouAccountToken = jObject["data"].ToString();
                 }
             }
-            catch
+            catch (Exception e)
             {
+                Console.WriteLine(e.Message);
                 return false;
             }
 
@@ -156,6 +141,7 @@ namespace Enou
 
             }
         }
+
 
     }
 }

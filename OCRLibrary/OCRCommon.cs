@@ -12,7 +12,6 @@ namespace OCRLibrary
         {
             "BaiduOCR",
             "TesseractOCR",
-            "Tesseract5_vert"
         };
 
         public static List<string> GetOCRList()
@@ -27,8 +26,6 @@ namespace OCRLibrary
                     return new BaiduGeneralOCR(); ;
                 case "TesseractOCR":
                     return new TesseractOCR(); ;
-                case "Tesseract5_vert":
-                    return new Tesseract5OCR();
                 default:
                     return null;
             }

@@ -177,7 +177,7 @@ namespace Enou
             set;
         }
 
-        [Option(Alias = "OCR_All.GlobalOCRLang", DefaultValue = "jpn")]
+        [Option(Alias = "OCR_All.GlobalOCRLang", DefaultValue = "eng")]
         string GlobalOCRLang
         {
             get;

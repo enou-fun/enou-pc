@@ -111,7 +111,7 @@ namespace Enou
                 viewModel.InkStrokes.Clear();
                 viewModel.InkStrokes.Add(stroke);
 
-                selectRect = new Rect(new Point(iniP.X * scale, iniP.Y * scale), new Point(endP.X * scale, endP.Y * scale));
+                selectRect = new Rect(new Point(iniP.X * scale +1, iniP.Y * scale +1), new Point(endP.X * scale -1, endP.Y * scale-1));
             }
         }
 

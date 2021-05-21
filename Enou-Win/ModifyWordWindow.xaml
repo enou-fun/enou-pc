@@ -13,7 +13,7 @@
             <ColumnDefinition Width="107*"/>
         </Grid.ColumnDefinitions>
         <Button x:Name="SubmitButton" Content="修改单词" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" Margin="78,212,0,0" RenderTransformOrigin="0.992,0.689" Click="SubmitButton_Click"/>
-        <TextBox x:Name="textBoxWord" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="120" Margin="78,99,0,0"/>
+        <TextBox x:Name="textBoxWord" HorizontalAlignment="Left" Height="37" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="157" Margin="78,99,0,0" Grid.ColumnSpan="2"/>
 
     </Grid>
 </Window>

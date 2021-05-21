@@ -63,6 +63,11 @@ namespace Enou
             if(Tools.HasToken)
             {
                 loginSucceed = HttpClientWrapper.LoginByToken();
+                if(!loginSucceed)
+                {
+                    Common.appSettings.EnouAccountToken = String.Empty;
+                    this.passwordBox.Password = String.Empty;
+                }
             }
             else
             {
