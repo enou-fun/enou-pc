@@ -60,11 +60,6 @@ namespace Enou
             this.SettingFrame.Navigate(new Uri("SettingsPages/TranslatorPages/JbeijingTransSettingsPage.xaml", UriKind.Relative));
         }
 
-        private void Item_BaiduOCR_Selected(object sender, RoutedEventArgs e)
-        {
-            this.SettingFrame.Navigate(new Uri("SettingsPages/OCRPages/BaiduOCRSettingsPage.xaml", UriKind.Relative));
-        }
-
         private void Item_OCRGeneral_Selected(object sender, RoutedEventArgs e)
         {
             this.SettingFrame.Navigate(new Uri("SettingsPages/OCRPages/OCRGeneralSettingsPage.xaml", UriKind.Relative));

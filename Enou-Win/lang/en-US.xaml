@@ -110,10 +110,6 @@
     <sys:String x:Key="OCRGeneralSettingsPage_Introduce_GlobalOCR">Select a global shortcut here for the global OCR function, with which you can recognize and translate in any case. It displays a separate window. Click and press the shortcut you want in the input box below, such as Ctrl + A, and the setting takes effect after the translator is restarted.</sys:String>
     <sys:String x:Key="OCRGeneralSettingsPage_GlobalOCRHotKey">Global OCR shortcut</sys:String>
 
-    <sys:String x:Key="BaiduOCRSettingsPage_Introduce">Baidu universal text recognition (network required) can be used for multi-scene, multilingual, high-precision text detection and recognition. You need to apply for the API and activate translation services (on the website in Chinese), get access to the API Key and Secret Key, and then fill in below before testing. It is likely to incur charges, &quot;Check API quota&quot; will lead you to the dashboard of Baidu OCR.</sys:String>
-    <sys:String x:Key="BaiduOCRSettingsPage_APIKEY">Baidu OCR API Key</sys:String>
-    <sys:String x:Key="BaiduOCRSettingsPage_SecretKey">Baidu OCR Secret Key</sys:String>
-
     <sys:String x:Key="HookSettingsPage_Introduce">This is the text hook method (Textractor) setting. Textractor was recoded and runs along with the Translator. There is no need to change its path.</sys:String>
     <sys:String x:Key="HookSettingsPage_AutoHook">Enable smart hook</sys:String>
     <sys:String x:Key="HookSettingsPage_AutoHook_Introduce">Once enabled, Translator hooks the process that uses the biggest memory among multiple processes with the same name.</sys:String>

@@ -108,10 +108,6 @@
     <sys:String x:Key="OCRGeneralSettingsPage_Introduce_GlobalOCR">此处选择一种全局快捷键组合用于全局OCR功能，全局OCR功能可以在任何情况下进行OCR识别和翻译，使用单独窗口显示。直接在下方输入框中按下你想要设置的快捷键，例如Ctrl + A，设置完成重启翻译器后生效。</sys:String>
     <sys:String x:Key="OCRGeneralSettingsPage_GlobalOCRHotKey">全局OCR快捷键</sys:String>
 
-    <sys:String x:Key="BaiduOCRSettingsPage_Introduce">百度通用文字识别可以供多场景、多语种、高精度的整图文字检测和识别服务，需要联网使用；您需要先申请本API并创建一个应用，获取APIKEY和SecretKey后填入下方相应位置并进行测试认证；百度通用文字识别部分版本可能会产生某些费用，您可以使用额度查询按钮进入控制台确认.</sys:String>
-    <sys:String x:Key="BaiduOCRSettingsPage_APIKEY">百度OCR API_KEY</sys:String>
-    <sys:String x:Key="BaiduOCRSettingsPage_SecretKey">百度OCR Secret_Key</sys:String>
-
     <sys:String x:Key="HookSettingsPage_Introduce">在这里进行文本Hook注入方式(Textractor)的相关设置;Textractor模块已经根据需要重写过并随本程序一起运行，您不需要更改它的位置</sys:String>
     <sys:String x:Key="HookSettingsPage_AutoHook">开启智能注入</sys:String>
     <sys:String x:Key="HookSettingsPage_AutoHook_Introduce">开启智能注入后，遇到某些游戏存在多个同名进程的情况下，将自动选择占用内存最大的进程注入</sys:String>

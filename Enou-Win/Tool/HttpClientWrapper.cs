@@ -113,6 +113,71 @@ namespace Enou
             }
         }
 
+        public static bool GetKnownWords()
+        {
+            HttpClient client = new HttpClient();
+            var request = new HttpRequestMessage()
+            {
+                RequestUri = new Uri(Common.appSettings.EnouServerGetKnownWordApi),
+                Method = HttpMethod.Get,
+            };
+            request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+            request.Headers.Add("token", Common.appSettings.EnouAccountToken);
+            try
+            {
+                HttpResponseMessage response = client.SendAsync(request).Result;
+                if(response.IsSuccessStatusCode)
+                {
+                    string jsonString = response.Content.ReadAsStringAsync().Result;
+
+                    JObject jObject = JObject.Parse(jsonString);
+
+                    List<String> wordList = jObject["data"].ToObject<List<String>>();
+                    Common.SetKnownWords(wordList);
+                    return true;
+                }
+            }
+            catch(Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                return false;
+            }
+
+            return false;
+        }
+
+        public static bool LearnWord(String word)
+        {
+            HttpClient client = new HttpClient();
+
+            var request = new HttpRequestMessage()
+            {
+                RequestUri = new Uri(Common.appSettings.EnouServerLearnWordApi),
+                Method = HttpMethod.Post,
+                Content = new FormUrlEncodedContent(new Dictionary<string, string>
+
+                {
+                    {"spell", word }
+                }),
+            };
+            request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+            request.Headers.Add("token", Common.appSettings.EnouAccountToken);
+
+            try
+            {
+                HttpResponseMessage response = client.SendAsync(request).Result;
+                if (response.IsSuccessStatusCode)
+                {
+                    return true;
+                }
+            }
+            catch
+            {
+                return false;
+            }
+            return false;
+        }
+
 
 
         public static void ModifyWord(long wordId, String word)

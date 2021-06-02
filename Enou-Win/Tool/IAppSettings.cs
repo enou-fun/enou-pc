@@ -37,6 +37,27 @@ namespace Enou
             set;
         }
 
+        [Option(Alias = "Enou.GetKnownWordApi", DefaultValue = "")]
+        string EnouServerGetKnownWordApi
+        {
+            get;
+            set;
+        }
+
+        [Option(Alias = "Enou.LearnWordApi", DefaultValue = "")]
+        string EnouServerLearnWordApi
+        {
+            get;
+            set;
+        }
+
+        [Option(Alias = "Enou.IgnoreWords", DefaultValue = "")]
+        string EnouIgnoreWords 
+        {
+            get;
+            set;
+        }
+
         [Option(Alias = "Enou.TokenCheckApi", DefaultValue = "")]
         string EnouServerTokenLoginCheckApi
         {
@@ -158,13 +179,6 @@ namespace Enou
 
         [Option(Alias = "Translate_All.TransLimitNums", DefaultValue = 100)]
         int TransLimitNums
-        {
-            get;
-            set;
-        }
-
-        [Option(Alias = "OCR_All.OCRsource", DefaultValue = "BaiduOCR")]
-        string OCRsource
         {
             get;
             set;

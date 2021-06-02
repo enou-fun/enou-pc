@@ -11,6 +11,7 @@ using System.Windows;
 using System.Windows.Interop;
 using System.Windows.Media.Imaging;
 using KeyboardMouseHookLibrary;
+using Newtonsoft.Json.Linq;
 using OCRLibrary;
 
 namespace Enou
@@ -34,6 +35,10 @@ namespace Enou
         public static Window mainWin; //全局的主窗口对象
 
         public static GlobalHotKey GlobalOCRHotKey; //全局OCR热键
+
+        private static HashSet<string> knownWordSet = new HashSet<string>();
+
+        private static HashSet<String> ignoreWordSet = new HashSet<string>();
 
            /// <summary>
         /// 根据进程PID找到程序所在路径
@@ -158,6 +163,45 @@ namespace Enou
             catch (Exception) {
                 return null;
             }
+        }
+
+        public static void SetKnownWords(List<String> wordList)
+        {
+            knownWordSet = wordList.ToHashSet();
+        }
+
+        public static void AddKnownWord(String word)
+        {
+            knownWordSet.Add(word);
+        }
+
+        public static bool WordAlreadyKnown(String word)
+        {
+            return knownWordSet.Contains(word);
+        }
+
+        public static bool WordIgnored(String word)
+        {
+            return ignoreWordSet.Contains(word);
+        }
+
+        public static void LoadIgnoreWords()
+        {
+            if (appSettings.EnouIgnoreWords.Equals(String.Empty))
+                return;
+
+            ignoreWordSet = appSettings.EnouIgnoreWords.Split(';').ToHashSet();
+        }
+
+        public static void SaveIgnoreWords()
+        {
+            appSettings.EnouIgnoreWords = String.Join(";", ignoreWordSet.ToList());
+        }
+
+        public static void AddIgnoreWords(String word)
+        {
+            ignoreWordSet.Add(word);
+            SaveIgnoreWords();
         }
     }
 }

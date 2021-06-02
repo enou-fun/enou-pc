@@ -27,9 +27,6 @@ namespace Enou.SettingsPages
         public OCRGeneralSettingsPage()
         {
             InitializeComponent();
-            OCRSourceCombox.ItemsSource = OCRCommon.GetOCRList();
-
-            OCRSourceCombox.SelectedValue = Common.appSettings.OCRsource;
             OCRHotKeyBox.Text = Common.appSettings.GlobalOCRHotkey;
 
             Langlist = ImageProcFunc.lstOCRLang.Keys.ToList();
@@ -42,11 +39,6 @@ namespace Enou.SettingsPages
                 }
             }
 
-        }
-
-        private void OCRsourceCombox_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            Common.appSettings.OCRsource = (string)OCRSourceCombox.SelectedValue;
         }
 
         private void OCRHotKeyBox_KeyDown(object sender, KeyEventArgs e1)

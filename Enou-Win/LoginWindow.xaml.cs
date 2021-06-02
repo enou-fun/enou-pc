@@ -77,8 +77,13 @@ namespace Enou
             {
                 Common.appSettings.EnouAccount = account;
                 var mainWindow = new MainWindow();
+                var modifyWordWindow = new LearnWordWindow();
                 mainWindow.Show();
                 this.Close();
+
+                HttpClientWrapper.GetKnownWords();
+
+                Common.LoadIgnoreWords();
             }
 
         }

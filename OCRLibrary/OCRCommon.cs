@@ -22,8 +22,6 @@ namespace OCRLibrary
         public static IOptChaRec OCRAuto(string ocr) {
             switch (ocr)
             {
-                case "BaiduOCR":
-                    return new BaiduGeneralOCR(); ;
                 case "TesseractOCR":
                     return new TesseractOCR(); ;
                 default:

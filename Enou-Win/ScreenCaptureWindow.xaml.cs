@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Windows;
 using System.Windows.Ink;
@@ -130,9 +131,26 @@ namespace Enou
 
         private void DoOCR(System.Drawing.Image image)
         {
-            var reswin = new GlobalOCRWindow();
-            reswin.DoSearchWithoutInit(image);
-            reswin.Close();
+            IOptChaRec ocr;
+            string res = null;
+            ocr = TesseractOCR.Instance;
+            ocr.SetOCRSourceLang(Common.appSettings.GlobalOCRLang);
+            res = ocr.OCRProcess(new System.Drawing.Bitmap(image));
+            if (res != null)
+            {
+                res = res.ToLower().Replace(".", "").Replace(",", "").Replace("!", "").Replace("\"", "");
+                String enouServer = res.Trim().Replace("\n", " ").Replace("\t", " ").Replace("\r", " ").Replace("—", " ");
+                ModifyWordAsync(enouServer);
+            }
+        }
+
+        private void ModifyWordAsync(string word)
+        {
+            var learnWordWindow = LearnWordWindow.Instance;
+            learnWordWindow.Text = word;
+
+            learnWordWindow.Refresh();
+            learnWordWindow.Show();
         }
 
     }

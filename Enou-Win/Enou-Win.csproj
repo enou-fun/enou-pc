@@ -84,17 +84,14 @@
     <Compile Include="LoginWindow.xaml.cs">
       <DependentUpon>LoginWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ModifyWordWindow.xaml.cs">
-      <DependentUpon>ModifyWordWindow.xaml</DependentUpon>
+    <Compile Include="LearnWordWindow.xaml.cs">
+      <DependentUpon>LearnWordWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="SettingsPages\SoftwareSettingsPage.xaml.cs">
       <DependentUpon>SoftwareSettingsPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="SettingsPages\TranslatorPages\XiaoniuTransSettingsPage.xaml.cs">
       <DependentUpon>XiaoniuTransSettingsPage.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="GlobalOCRWindow.xaml.cs">
-      <DependentUpon>GlobalOCRWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Tool\IAppSettings.cs" />
     <Compile Include="ScreenCaptureWindow.xaml.cs">
@@ -108,9 +105,6 @@
     </Compile>
     <Compile Include="SettingsPages\OCRPages\OCRGeneralSettingsPage.xaml.cs">
       <DependentUpon>OCRGeneralSettingsPage.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="SettingsPages\OCRPages\BaiduOCRSettingsPage.xaml.cs">
-      <DependentUpon>BaiduOCRSettingsPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="SettingsPages\TranslatorPages\DreyeTransSettingsPage.xaml.cs">
       <DependentUpon>DreyeTransSettingsPage.xaml</DependentUpon>
@@ -144,7 +138,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="ModifyWordWindow.xaml">
+    <Page Include="LearnWordWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -153,10 +147,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="SettingsPages\TranslatorPages\XiaoniuTransSettingsPage.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="GlobalOCRWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -198,10 +188,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="SettingsPages\OCRPages\OCRGeneralSettingsPage.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="SettingsPages\OCRPages\BaiduOCRSettingsPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

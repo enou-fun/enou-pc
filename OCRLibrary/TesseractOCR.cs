@@ -141,28 +141,32 @@ namespace OCRLibrary
         {
             int totalPix = img.Width * 2 + img.Height * 2;
 
-            int blackPixCount = 0;
+            int colorAvgSum = img.GetPixel(0, 0).Sum() + img.GetPixel(img.Width-1, img.Height-1).Sum();
+            colorAvgSum += img.GetPixel(img.Width - 1, 0).Sum() + img.GetPixel(0, img.Height - 1).Sum();
+            colorAvgSum /= 4;
+
+            int differentPixCount = 0;
             for(int x = 0; x < img.Width; ++x)
             {
-                if (img.GetPixel(x, 0).Sum() < 700)
-                    blackPixCount++;
+                if (Math.Abs(img.GetPixel(x, 0).Sum() - colorAvgSum) > 50)
+                    differentPixCount++;
 
-                if (img.GetPixel(x, img.Height-1).Sum() < 700)
-                    blackPixCount++;
+                if (Math.Abs(img.GetPixel(x, img.Height-1).Sum() - colorAvgSum) > 50)
+                    differentPixCount++;
 
-                if (blackPixCount > totalPix * 0.1)
+                if (differentPixCount > totalPix * 0.1)
                     return false;
             }
 
             for(int y = 0; y < img.Height; ++y)
             {
-                if (img.GetPixel(0, y).Sum() < 700)
-                    blackPixCount++;
+                if (Math.Abs(img.GetPixel(0, y).Sum() - colorAvgSum) > 50)
+                    differentPixCount++;
 
-                if (img.GetPixel(img.Width-1, y).Sum() < 700)
-                    blackPixCount++;
+                if (Math.Abs(img.GetPixel(img.Width-1, y).Sum() - colorAvgSum) > 50)
+                    differentPixCount++;
 
-                if (blackPixCount > totalPix * 0.1)
+                if (differentPixCount > totalPix * 0.1)
                     return false;
             }
 
