@@ -165,24 +165,32 @@ namespace Enou
             }
         }
 
-        public static void SetKnownWords(List<String> wordList)
+        public static void AddKnownWords(List<String> wordList)
         {
-            knownWordSet = wordList.ToHashSet();
+            foreach(var word in wordList)
+            {
+                knownWordSet.Add(word);       
+            }
+        }
+
+        public static int GetKnownWordsCount()
+        {
+            return knownWordSet.Count;
         }
 
         public static void AddKnownWord(String word)
         {
-            knownWordSet.Add(word);
+            knownWordSet.Add(word.ToLower());
         }
 
         public static bool WordAlreadyKnown(String word)
         {
-            return knownWordSet.Contains(word);
+            return knownWordSet.Contains(word.ToLower());
         }
 
         public static bool WordIgnored(String word)
         {
-            return ignoreWordSet.Contains(word);
+            return ignoreWordSet.Contains(word.ToLower());
         }
 
         public static void LoadIgnoreWords()
@@ -200,7 +208,7 @@ namespace Enou
 
         public static void AddIgnoreWords(String word)
         {
-            ignoreWordSet.Add(word);
+            ignoreWordSet.Add(word.ToLower());
             SaveIgnoreWords();
         }
     }

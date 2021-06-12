@@ -72,7 +72,7 @@ namespace Enou
             try
             {
                 HttpResponseMessage response = client.PostAsync(uri, content).Result;
-                if (response.IsSuccessStatusCode)
+                if (response.IsSuccessStatusCode && Common.appSettings.RememberPassword)
                 {
                     string jsonString = response.Content.ReadAsStringAsync().Result;
                     Console.WriteLine("token is " + jsonString);
@@ -113,29 +113,39 @@ namespace Enou
             }
         }
 
-        public static bool GetKnownWords()
+        public static bool GetKnownWords(int offset, int count)
         {
             HttpClient client = new HttpClient();
             var request = new HttpRequestMessage()
             {
-                RequestUri = new Uri(Common.appSettings.EnouServerGetKnownWordApi),
+                RequestUri = new Uri(Common.appSettings.EnouServerGetKnownWordApi+"?offset="+offset+"&count="+count),
                 Method = HttpMethod.Get,
             };
             request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
             request.Headers.Add("token", Common.appSettings.EnouAccountToken);
             try
             {
-                HttpResponseMessage response = client.SendAsync(request).Result;
-                if(response.IsSuccessStatusCode)
+                Task<HttpResponseMessage> task = client.SendAsync(request);
+
+                task.ContinueWith((t) =>
                 {
-                    string jsonString = response.Content.ReadAsStringAsync().Result;
+                    var response = t.Result;
+                    if (response.IsSuccessStatusCode)
+                    {
+                        string jsonString = response.Content.ReadAsStringAsync().Result;
 
-                    JObject jObject = JObject.Parse(jsonString);
+                        JObject jObject = JObject.Parse(jsonString);
 
-                    List<String> wordList = jObject["data"].ToObject<List<String>>();
-                    Common.SetKnownWords(wordList);
-                    return true;
-                }
+                        List<String> wordList = jObject["data"].ToObject<List<String>>();
+                        Common.AddKnownWords(wordList);
+                        MainWindow.Instance.InvokeModifyWordSyncLabel(Common.GetKnownWordsCount());
+                        if (wordList.Count != 0)
+                        {
+                            GetKnownWords(offset + count, count);
+                        }
+                    }
+                });
+
             }
             catch(Exception ex)
             {
@@ -143,7 +153,7 @@ namespace Enou
                 return false;
             }
 
-            return false;
+            return true;
         }
 
         public static bool LearnWord(String word)

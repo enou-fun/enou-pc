@@ -14,9 +14,7 @@
         </Grid.ColumnDefinitions>
         <Button x:Name="SubmitButton" Content="一键学习" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" Margin="10,509,0,0" RenderTransformOrigin="0.992,0.689" Click="SubmitButton_Click"/>
 
-        <WrapPanel x:Name="wrapPanelFiltered" HorizontalAlignment="Left" Height="494" VerticalAlignment="Top" Width="657" Margin="10,10,0,0" Grid.ColumnSpan="3">
-            <Button x:Name="button" Content="Button" Width="75" Foreground="#FFDC2A2A" FontSize="20" FontWeight="Bold"/>
-        </WrapPanel>
+        <WrapPanel x:Name="wrapPanelFiltered" HorizontalAlignment="Left" Height="494" VerticalAlignment="Top" Width="657" Margin="10,10,0,0" Grid.ColumnSpan="3"/>
 
     </Grid>
 </Window>

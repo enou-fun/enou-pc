@@ -11,7 +11,7 @@
         ShowTitle="True"
         Height="540" 
         Width="960" Closing="BlurWindow_Closing"
-               ContentRendered="BlurWindow_ContentRendered">
+               ContentRendered="BlurWindow_ContentRendered" Loaded="BlurWindow_Loaded">
     <Window.Resources>
         <ResourceDictionary Source = "Appearance.xaml"/>
     </Window.Resources>
@@ -37,17 +37,6 @@
             <ColumnDefinition Width="839*"/>
             <ColumnDefinition Width="103*"/>
         </Grid.ColumnDefinitions>
-
-        <hc:ScrollViewer Grid.Row="0"  Margin="10,10,10,11" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Hidden" Orientation="Horizontal" Grid.ColumnSpan="2" Loaded="ScrollViewer_Loaded">
-            <hc:WaterfallPanel Name="GameLibraryPanel" VerticalAlignment="Center" HorizontalAlignment="Center" Height="250" Groups="2" Orientation="Vertical" hc:PanelElement.FluidMoveBehavior="{StaticResource BehaviorXY200}">
-
-            </hc:WaterfallPanel>
-        </hc:ScrollViewer>
-
-
-        <StackPanel Orientation="Horizontal" Grid.ColumnSpan="2">
-    
-        </StackPanel>
 
 
         <Button fa:Awesome.Content="Cog" Grid.Column="1" HorizontalAlignment="Right" VerticalAlignment="Bottom" Foreground="{DynamicResource MainBtnColor}" FontSize="40" Background="#01FFFFFF"  Height="Auto" Width="Auto"  Effect="{StaticResource EffectShadow5}" Click="SettingsBtn_Click" Margin="0,0,0,1">
@@ -116,5 +105,6 @@
                 </hc:EventTrigger>
             </hc:Interaction.Triggers>
         </hc:NotifyIcon>
+        <Label x:Name="labelWordSyncPercent" Content="单词已同步0 " HorizontalAlignment="Left" VerticalAlignment="Top" Margin="28,10,0,0"/>
     </Grid>
 </hc:BlurWindow>

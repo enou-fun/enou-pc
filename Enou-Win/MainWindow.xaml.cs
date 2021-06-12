@@ -64,44 +64,6 @@ namespace Enou
             Common.GlobalOCR();
         }
 
-        /// <summary>
-        /// 游戏库瀑布流初始化
-        /// </summary>
-        private void GameLibraryPanel_Init()
-        {
-            Random random = new Random();
-            var bushLst = new List<SolidColorBrush>
-                {
-                    System.Windows.Media.Brushes.CornflowerBlue,
-                    System.Windows.Media.Brushes.IndianRed,
-                    System.Windows.Media.Brushes.Orange,
-                    System.Windows.Media.Brushes.ForestGreen
-                };
-            var textBlock = new TextBlock()
-            {
-                Text = Application.Current.Resources["MainWindow_ScrollViewer_AddNewGame"].ToString(),
-                Foreground = System.Windows.Media.Brushes.White,
-                VerticalAlignment = VerticalAlignment.Center,
-                HorizontalAlignment = HorizontalAlignment.Center,
-                Margin = new Thickness(3)
-            };
-            var grid = new Grid();
-            grid.Children.Add(textBlock);
-            var border = new Border()
-            {
-                Name = "AddNewName",
-                Width = 150,
-                Child = grid,
-                Margin = new Thickness(5),
-                Background = (SolidColorBrush)this.Resources["Foreground"]
-            };
-            border.MouseEnter += Border_MouseEnter;
-            border.MouseLeave += Border_MouseLeave;
-            border.MouseLeftButtonDown += Border_MouseLeftButtonDown;
-            GameLibraryPanel.RegisterName("AddNewGame", border);
-            GameLibraryPanel.Children.Add(border);
-        }
-
         private void Border_MouseLeftButtonDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
             AddNewGameDrawer.IsOpen = true;
@@ -221,6 +183,21 @@ namespace Enou
         private void ScrollViewer_Loaded(object sender, RoutedEventArgs e)
         {
            // this.Visibility = Visibility.Collapsed;
+        }
+
+        private void BlurWindow_Loaded(object sender, RoutedEventArgs e)
+        {
+            HttpClientWrapper.GetKnownWords(0, 100);
+        }
+
+        private void ModifyWordSyncLabel(int offset)
+        {
+            this.labelWordSyncPercent.Content = "单词已同步" + offset;
+        }
+
+        public void InvokeModifyWordSyncLabel(int offset)
+        {
+            this.Dispatcher.Invoke(new Action<int>(ModifyWordSyncLabel), new object[] { offset });
         }
     }
 }

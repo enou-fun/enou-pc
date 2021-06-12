@@ -138,9 +138,9 @@ namespace Enou
             res = ocr.OCRProcess(new System.Drawing.Bitmap(image));
             if (res != null)
             {
-                res = res.ToLower().Replace(".", "").Replace(",", "").Replace("!", "").Replace("\"", "");
-                String enouServer = res.Trim().Replace("\n", " ").Replace("\t", " ").Replace("\r", " ").Replace("—", " ");
-                ModifyWordAsync(enouServer);
+                //res = res.ToLower().Replace(".", "").Replace(",", "").Replace("!", "").Replace("\"", "");
+                //String enouServer = res.Trim().Replace("\n", " ").Replace("\t", " ").Replace("\r", " ").Replace("—", " ");
+                ModifyWordAsync(res);
             }
         }
 
@@ -150,6 +150,7 @@ namespace Enou
             learnWordWindow.Text = word;
 
             learnWordWindow.Refresh();
+            learnWordWindow.WindowState = WindowState.Normal;
             learnWordWindow.Show();
         }
 

@@ -28,12 +28,5 @@ namespace Enou
             p.Close();
         }
 
-        public static bool HasToken
-        {
-            get 
-            {
-                return Common.appSettings.EnouAccountToken != String.Empty;
-            }
-        }
     }
 }

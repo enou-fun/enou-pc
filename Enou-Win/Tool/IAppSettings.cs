@@ -23,6 +23,21 @@ namespace Enou
             set;
         }
 
+
+        [Option(Alias = "Enou.AutoLogin", DefaultValue = "false")]
+        bool AutoLogin 
+        {
+            get;
+            set;
+        }
+
+        [Option(Alias = "Enou.RememberPassword", DefaultValue = "false")]
+        bool RememberPassword
+        {
+            get;
+            set;
+        }
+
         [Option(Alias = "Enou.WordApi", DefaultValue = "")]
         string EnouServerWordApi
         {

@@ -23,7 +23,7 @@ namespace Enou
     {
         public String Text { get; set; }
 
-        private List<String> wordList = new List<String>();
+        private List<List<String>> paraWordList = new List<List<String>>();
 
         private ToolTip toolTip = new ToolTip();
 
@@ -41,9 +41,15 @@ namespace Enou
         private void SubmitButton_Click(object sender, RoutedEventArgs e)
         {
 
-            foreach(var word in wordList)
+            foreach(var wordPara in paraWordList)
             {
-                LearnWord(word);
+                foreach(var word in wordPara)
+                {
+                    if(!Common.WordAlreadyKnown(word) && !Common.WordIgnored(word) && !Char.IsPunctuation(word[0]))
+                    {
+                        LearnWord(word);
+                    }
+                }
             }
             Refresh();
 
@@ -59,43 +65,115 @@ namespace Enou
         public void Refresh()
         {
 
-            wordList = TurnTextToWords(Text).ToList();
-            GenerateButtons(wordList, wrapPanelFiltered);
+            paraWordList = TurnTextToParagraghs(Text).ToList();
+            GenerateButtons(paraWordList, wrapPanelFiltered);
         }
 
-        private IEnumerable<String> TurnTextToWords(String text)
+        private IEnumerable<List<String>> TurnTextToParagraghs(String text)
+        {
+            String[] seperatorArray = { "\n\n" };
+            List<String> paragraphList = text.Split(seperatorArray, StringSplitOptions.RemoveEmptyEntries).ToList();
+            paragraphList.RemoveAll(str => str.Equals(String.Empty));
+
+            List<List<String>> paragraphWordList = new List<List<string>>();
+
+            var textSplit = text.Split();
+
+            foreach(var paraText in paragraphList)
+            {
+                List<String> words = TurnTextToWords(paraText);
+                paragraphWordList.Add(words);
+            }
+
+            return paragraphWordList;
+        }
+        private List<String>  TurnTextToWords(String text)
         {
             var punctuation = text.Where(Char.IsPunctuation).Distinct().ToArray();
-            var words = text.Split().Select(x => x.Trim(punctuation)).ToList();
-            words.RemoveAll(x => x.Trim().Equals(String.Empty));
-            //words.RemoveAll(x => Common.WordAlreadyKnown(x));
-            //words.RemoveAll(x => Common.WordIgnored(x));
-            return words;
-        }
-
-        private void GenerateButtons(IEnumerable<String> words, Panel panel)
-        {
-            panel.Children.Clear();
+            var words = text.Split(); 
+            List<String> result = new List<String>();
             foreach(var word in words)
             {
-                Button button = new Button();
-                button.VerticalAlignment = VerticalAlignment.Top;
-                button.Content = word;
-                button.Click += new System.Windows.RoutedEventHandler(this.SearchWebButton_Click);
-                button.FontSize = 16;
-                button.Padding = new Thickness(2, 2, 2, 2);
-                button.BorderThickness = new Thickness(0, 0, 0, 0);
-                if(!Common.WordAlreadyKnown(word) && !Common.WordIgnored(word))
+                result.AddRange(Trim(word, punctuation));
+            }
+            //words.RemoveAll(x => Common.WordAlreadyKnown(x));
+            //words.RemoveAll(x => Common.WordIgnored(x));
+            return result;
+        }
+
+        private List<String> Trim(String word, char[] punctuation)
+        {
+            List<String> result = new List<String>();
+            List<int> splitBeforeIndex = new List<int>();
+            splitBeforeIndex.Add(0);
+            for(int i = 1; i < word.Length; ++i)
+            {
+                bool wordBeforeIsPunc = Char.IsPunctuation(word[i - 1]);
+                bool wordIsPunc = Char.IsPunctuation(word[i]);
+                if(wordIsPunc != wordBeforeIsPunc)
                 {
-                    button.Foreground = Brushes.Red;
-                    button.FontWeight = FontWeights.Bold;
+                    splitBeforeIndex.Add(i);
                 }
-                panel.Children.Add(button);
+            }
+
+            splitBeforeIndex.Add(word.Length);
+
+            for(int i = 0; i < splitBeforeIndex.Count-1; ++i)
+            {
+                result.Add(word.Substring(splitBeforeIndex[i], splitBeforeIndex[i + 1] - splitBeforeIndex[i]));
+            }
+            return result;
+        }
+
+        private void GenerateButtons(List<List<String>> wordParaList, Panel panel)
+        {
+            panel.Children.Clear();
+            foreach(var wordPara in wordParaList)
+            {
+                foreach(var word in wordPara)
+                {
+                    bool isPunctuation = Char.IsPunctuation(word[0]);
+                    if (isPunctuation)
+                    {
+                        Label label = new Label();
+                        //label.VerticalAlignment = VerticalAlignment.Top;
+                        label.Content = word;
+                        label.FontSize = 16;
+                        label.Padding = new Thickness(1, 1, 1, 1);
+                        label.BorderThickness = new Thickness(0, 0, 0, 0);
+                        panel.Children.Add(label);
+                        continue;
+                    }
+
+                    Button button = new Button();
+                   // button.VerticalAlignment = VerticalAlignment.Top;
+                    button.Content = word;
+                    button.Click += new System.Windows.RoutedEventHandler(this.SearchWebButton_Click);
+                    button.FontSize = 16;
+                    button.Padding = new Thickness(2, 2, 2, 2);
+                    button.BorderThickness = new Thickness(0, 0, 0, 0);
+                    if (!Common.WordAlreadyKnown(word) && !Common.WordIgnored(word))
+                    {
+                        button.Foreground = Brushes.Red;
+                        button.FontWeight = FontWeights.Bold;
+                    }
+
+
+                    panel.Children.Add(button);
+                }
+
+                Label lineLabel = new Label();
+                lineLabel.Width = panel.Width;
+                //lineLabel.Height = 2;
+                lineLabel.BorderThickness = new Thickness(0, 0, 0, 0);
+                panel.Children.Add(lineLabel);
+
             }
         }
 
         private void LearnWord(String word)
         {
+            word = word.ToLower();
             bool succeed = HttpClientWrapper.LearnWord(word);
             if(succeed)
             {
@@ -115,6 +193,7 @@ namespace Enou
 
                 Button button = sender as Button;
                 string str = "www.bing.com/search?q=" + button.Content + "%20define\"&\"ensearch=1";
+                LearnWord(button.Content.ToString());
 
                 Tools.OpenBrowser(str);
             }

@@ -45,9 +45,20 @@ namespace Enou
         {
             originLabelWeight = this.label.FontWeight.ToOpenTypeWeight();
             textBoxAccount.Text = Common.appSettings.EnouAccount;
-            if(Tools.HasToken)
+            if(Common.appSettings.RememberPassword)
             {
                 passwordBox.Password = Common.appSettings.EnouAccountToken;
+            }
+
+            if(Common.appSettings.AutoLogin)
+            {
+                checkBoxAutoLogin.IsChecked = true;
+                button.RaiseEvent(new RoutedEventArgs(Button.ClickEvent));
+            }
+
+            if(Common.appSettings.RememberPassword)
+            {
+                checkBoxRmbPwd.IsChecked = true;
             }
         }
 
@@ -57,14 +68,13 @@ namespace Enou
             String password = this.passwordBox.Password;
 
 
-
-
             bool loginSucceed = false;
-            if(Tools.HasToken)
+            if(Common.appSettings.RememberPassword)
             {
                 loginSucceed = HttpClientWrapper.LoginByToken();
                 if(!loginSucceed)
                 {
+                    labelHint.Content = "账号/密码错误，登录失败";
                     Common.appSettings.EnouAccountToken = String.Empty;
                     this.passwordBox.Password = String.Empty;
                 }
@@ -73,6 +83,8 @@ namespace Enou
             {
                 loginSucceed = HttpClientWrapper.LoginByPwd(account, password);
             }
+
+
             if(loginSucceed)
             {
                 Common.appSettings.EnouAccount = account;
@@ -81,11 +93,30 @@ namespace Enou
                 mainWindow.Show();
                 this.Close();
 
-                HttpClientWrapper.GetKnownWords();
 
                 Common.LoadIgnoreWords();
             }
 
+        }
+
+        private void checkBoxAutoLogin_Checked(object sender, RoutedEventArgs e)
+        {
+            Common.appSettings.AutoLogin = true;
+        }
+
+        private void checkBoxAutoLogin_Unchecked(object sender, RoutedEventArgs e)
+        {
+            Common.appSettings.AutoLogin = false;
+        }
+
+        private void checkBoxRmbPwd_Checked(object sender, RoutedEventArgs e)
+        {
+            Common.appSettings.RememberPassword = false;
+        }
+
+        private void checkBoxRmbPwd_Unchecked(object sender, RoutedEventArgs e)
+        {
+            Common.appSettings.RememberPassword = true;
         }
     }
 }
