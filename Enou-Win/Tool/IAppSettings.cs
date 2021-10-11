@@ -59,6 +59,14 @@ namespace Enou
             set;
         }
 
+
+        [Option(Alias = "Enou.GetKnownWordCountApi" ,DefaultValue ="")]
+        string EnouServerGetKnownWordCountApi
+        {   
+            get;
+            set;
+        }
+
         [Option(Alias = "Enou.LearnWordApi", DefaultValue = "")]
         string EnouServerLearnWordApi
         {
@@ -72,6 +80,14 @@ namespace Enou
             get;
             set;
         }
+
+        [Option(Alias = "Enou.KnownWords", DefaultValue = "")]
+        string EnouKnownWords
+        {
+            get;
+            set;
+        }
+
 
         [Option(Alias = "Enou.TokenCheckApi", DefaultValue = "")]
         string EnouServerTokenLoginCheckApi

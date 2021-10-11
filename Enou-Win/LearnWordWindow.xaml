@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Enou"
         mc:Ignorable="d"
-        Title="LearnWordWindow" Height="584.077" Width="701.636" Loaded="Window_Loaded" Topmost="True" Closing="Window_Closing">
+        ResizeMode="NoResize" Title="LearnWordWindow" Height="584.077" Width="701.636" Loaded="Window_Loaded" Topmost="True" Closing="Window_Closing">
     <Grid Margin="0,0,2,0" RenderTransformOrigin="0.507,0.512">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="207*"/>

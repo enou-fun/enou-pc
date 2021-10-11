@@ -72,7 +72,7 @@ namespace Enou
             try
             {
                 HttpResponseMessage response = client.PostAsync(uri, content).Result;
-                if (response.IsSuccessStatusCode && Common.appSettings.RememberPassword)
+                if (response.IsSuccessStatusCode)
                 {
                     string jsonString = response.Content.ReadAsStringAsync().Result;
                     Console.WriteLine("token is " + jsonString);
@@ -138,7 +138,6 @@ namespace Enou
 
                         List<String> wordList = jObject["data"].ToObject<List<String>>();
                         Common.AddKnownWords(wordList);
-                        MainWindow.Instance.InvokeModifyWordSyncLabel(Common.GetKnownWordsCount());
                         if (wordList.Count != 0)
                         {
                             GetKnownWords(offset + count, count);
@@ -154,6 +153,42 @@ namespace Enou
             }
 
             return true;
+        }
+
+
+        public static int GetKnownWordCount()
+        {
+            HttpClient client = new HttpClient();
+            var request = new HttpRequestMessage()
+            {
+                RequestUri = new Uri(Common.appSettings.EnouServerGetKnownWordCountApi),
+                Method = HttpMethod.Get,
+            };
+            request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+            request.Headers.Add("token", Common.appSettings.EnouAccountToken);
+            try
+            {
+                Task<HttpResponseMessage> task = client.SendAsync(request);
+
+                var response = task.Result;
+                if (response.IsSuccessStatusCode)
+                {
+                    string jsonString = response.Content.ReadAsStringAsync().Result;
+
+                    JObject jObject = JObject.Parse(jsonString);
+
+                    int count = jObject["data"].ToObject<int>();
+                    return count;
+                }
+
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                return -1;
+            }
+
+            return -1;
         }
 
         public static bool LearnWord(String word)

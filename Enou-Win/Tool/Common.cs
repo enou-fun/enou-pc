@@ -171,21 +171,29 @@ namespace Enou
             {
                 knownWordSet.Add(word);       
             }
-        }
-
-        public static int GetKnownWordsCount()
-        {
-            return knownWordSet.Count;
+            SaveKnownWords();
         }
 
         public static void AddKnownWord(String word)
         {
             knownWordSet.Add(word.ToLower());
+            SaveKnownWords();
+        }
+
+        public static void ClearKnownWord()
+        {
+            knownWordSet.Clear();
+            SaveKnownWords();
         }
 
         public static bool WordAlreadyKnown(String word)
         {
             return knownWordSet.Contains(word.ToLower());
+        }
+
+        public static int KnownWordCount
+        {
+            get { return knownWordSet.Count; }
         }
 
         public static bool WordIgnored(String word)
@@ -201,9 +209,26 @@ namespace Enou
             ignoreWordSet = appSettings.EnouIgnoreWords.Split(';').ToHashSet();
         }
 
+        public static void LoadKnownWords()
+        {
+            if (appSettings.EnouKnownWords.Equals(String.Empty))
+                return;
+
+            knownWordSet = appSettings.EnouKnownWords.Split(';').ToHashSet();
+        }
+
         public static void SaveIgnoreWords()
         {
             appSettings.EnouIgnoreWords = String.Join(";", ignoreWordSet.ToList());
+        }
+
+        public static void SaveKnownWords()
+        {
+            appSettings.EnouKnownWords = String.Join(";", knownWordSet.ToList());
+            if(MainWindow.Instance != null)
+            {
+                MainWindow.Instance.InvokeModifyWordSyncLabel(knownWordSet.Count);
+            }
         }
 
         public static void AddIgnoreWords(String word)

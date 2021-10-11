@@ -187,7 +187,12 @@ namespace Enou
 
         private void BlurWindow_Loaded(object sender, RoutedEventArgs e)
         {
-            HttpClientWrapper.GetKnownWords(0, 100);
+            int count = HttpClientWrapper.GetKnownWordCount();
+            if(count != Common.KnownWordCount)
+            {
+                HttpClientWrapper.GetKnownWords(0, 100);
+            }
+            this.labelWordSyncPercent.Content = "单词已同步" + Common.KnownWordCount;
         }
 
         private void ModifyWordSyncLabel(int offset)

@@ -45,7 +45,7 @@ namespace Enou
             {
                 foreach(var word in wordPara)
                 {
-                    if(!Common.WordAlreadyKnown(word) && !Common.WordIgnored(word) && !Char.IsPunctuation(word[0]))
+                    if(!Common.WordAlreadyKnown(word) && !Common.WordIgnored(word) && !IsPunctuation(word[0]))
                     {
                         LearnWord(word);
                     }
@@ -64,16 +64,16 @@ namespace Enou
 
         public void Refresh()
         {
-
             paraWordList = TurnTextToParagraghs(Text).ToList();
             GenerateButtons(paraWordList, wrapPanelFiltered);
         }
 
         private IEnumerable<List<String>> TurnTextToParagraghs(String text)
         {
+            text = text.Replace("-\n", "");
             String[] seperatorArray = { "\n\n" };
             List<String> paragraphList = text.Split(seperatorArray, StringSplitOptions.RemoveEmptyEntries).ToList();
-            paragraphList.RemoveAll(str => str.Equals(String.Empty));
+            paragraphList.RemoveAll(str => str.Trim().Equals(String.Empty));
 
             List<List<String>> paragraphWordList = new List<List<string>>();
 
@@ -89,7 +89,7 @@ namespace Enou
         }
         private List<String>  TurnTextToWords(String text)
         {
-            var punctuation = text.Where(Char.IsPunctuation).Distinct().ToArray();
+            var punctuation = text.Where(IsPunctuation).Distinct().ToArray();
             var words = text.Split(); 
             List<String> result = new List<String>();
             foreach(var word in words)
@@ -101,6 +101,11 @@ namespace Enou
             return result;
         }
 
+        private bool IsPunctuation(Char c)
+        {
+            return Char.IsPunctuation(c) && c != '-';
+        }
+
         private List<String> Trim(String word, char[] punctuation)
         {
             List<String> result = new List<String>();
@@ -108,8 +113,8 @@ namespace Enou
             splitBeforeIndex.Add(0);
             for(int i = 1; i < word.Length; ++i)
             {
-                bool wordBeforeIsPunc = Char.IsPunctuation(word[i - 1]);
-                bool wordIsPunc = Char.IsPunctuation(word[i]);
+                bool wordBeforeIsPunc = IsPunctuation(word[i - 1]);
+                bool wordIsPunc = IsPunctuation(word[i]);
                 if(wordIsPunc != wordBeforeIsPunc)
                 {
                     splitBeforeIndex.Add(i);
@@ -132,7 +137,10 @@ namespace Enou
             {
                 foreach(var word in wordPara)
                 {
-                    bool isPunctuation = Char.IsPunctuation(word[0]);
+                    if (word.Length == 0)
+                        continue;
+
+                    bool isPunctuation = IsPunctuation(word[0]);
                     if (isPunctuation)
                     {
                         Label label = new Label();

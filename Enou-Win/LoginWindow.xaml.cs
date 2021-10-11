@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -87,14 +87,18 @@ namespace Enou
 
             if(loginSucceed)
             {
+                Common.LoadIgnoreWords();
+                Common.LoadKnownWords();
+
+                if(Common.appSettings.EnouAccount != account)
+                {
+                    Common.ClearKnownWord();
+                }
                 Common.appSettings.EnouAccount = account;
                 var mainWindow = new MainWindow();
                 var modifyWordWindow = new LearnWordWindow();
                 mainWindow.Show();
                 this.Close();
-
-
-                Common.LoadIgnoreWords();
             }
 
         }
