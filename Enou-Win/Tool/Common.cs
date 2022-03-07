@@ -1,4 +1,5 @@
-﻿using System;
+using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
@@ -36,9 +37,9 @@ namespace Enou
 
         public static GlobalHotKey GlobalOCRHotKey; //全局OCR热键
 
-        private static HashSet<string> knownWordSet = new HashSet<string>();
+        private static ConcurrentDictionary<string,byte> knownWordDict = new ConcurrentDictionary<string, byte>();
 
-        private static HashSet<String> ignoreWordSet = new HashSet<string>();
+        private static ConcurrentDictionary<string,byte> ignoreWordDict = new ConcurrentDictionary<string, byte>();
 
            /// <summary>
         /// 根据进程PID找到程序所在路径
@@ -169,36 +170,36 @@ namespace Enou
         {
             foreach(var word in wordList)
             {
-                knownWordSet.Add(word);       
+                knownWordDict.TryAdd(word.ToLower(), 1);       
             }
             SaveKnownWords();
         }
 
         public static void AddKnownWord(String word)
         {
-            knownWordSet.Add(word.ToLower());
+            knownWordDict.TryAdd(word.ToLower(), 1);
             SaveKnownWords();
         }
 
         public static void ClearKnownWord()
         {
-            knownWordSet.Clear();
+            knownWordDict.Clear();
             SaveKnownWords();
         }
 
         public static bool WordAlreadyKnown(String word)
         {
-            return knownWordSet.Contains(word.ToLower());
+            return knownWordDict.ContainsKey(word.ToLower());
         }
 
         public static int KnownWordCount
         {
-            get { return knownWordSet.Count; }
+            get { return knownWordDict.Count; }
         }
 
         public static bool WordIgnored(String word)
         {
-            return ignoreWordSet.Contains(word.ToLower());
+            return ignoreWordDict.ContainsKey(word.ToLower());
         }
 
         public static void LoadIgnoreWords()
@@ -206,7 +207,11 @@ namespace Enou
             if (appSettings.EnouIgnoreWords.Equals(String.Empty))
                 return;
 
-            ignoreWordSet = appSettings.EnouIgnoreWords.Split(';').ToHashSet();
+            foreach(var str in appSettings.EnouIgnoreWords.Split(';'))
+            {
+                ignoreWordDict.TryAdd(str.ToLower(), 1);
+                AddIgnoreWords(str);
+            }
         }
 
         public static void LoadKnownWords()
@@ -214,26 +219,29 @@ namespace Enou
             if (appSettings.EnouKnownWords.Equals(String.Empty))
                 return;
 
-            knownWordSet = appSettings.EnouKnownWords.Split(';').ToHashSet();
+            foreach(var str in appSettings.EnouKnownWords.Split(';'))
+            {
+                knownWordDict.TryAdd(str.ToLower(), 1);
+            }
         }
 
         public static void SaveIgnoreWords()
         {
-            appSettings.EnouIgnoreWords = String.Join(";", ignoreWordSet.ToList());
+            appSettings.EnouIgnoreWords = String.Join(";", ignoreWordDict.Keys.ToList());
         }
 
         public static void SaveKnownWords()
         {
-            appSettings.EnouKnownWords = String.Join(";", knownWordSet.ToList());
+            appSettings.EnouKnownWords = String.Join(";", knownWordDict.Keys.ToList());
             if(MainWindow.Instance != null)
             {
-                MainWindow.Instance.InvokeModifyWordSyncLabel(knownWordSet.Count);
+                MainWindow.Instance.InvokeModifyWordSyncLabel(knownWordDict.Count);
             }
         }
 
         public static void AddIgnoreWords(String word)
         {
-            ignoreWordSet.Add(word.ToLower());
+            ignoreWordDict.TryAdd(word.ToLower(),1);
             SaveIgnoreWords();
         }
     }

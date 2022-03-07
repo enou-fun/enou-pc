@@ -1,4 +1,4 @@
-﻿using Newtonsoft.Json.Linq;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -137,6 +137,9 @@ namespace Enou
                         JObject jObject = JObject.Parse(jsonString);
 
                         List<String> wordList = jObject["data"].ToObject<List<String>>();
+
+                        //server will return null value?? todo
+                        wordList.RemoveAll(word => word == null);
                         Common.AddKnownWords(wordList);
                         if (wordList.Count != 0)
                         {

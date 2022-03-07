@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
@@ -181,16 +181,19 @@ namespace Enou
 
         private void LearnWord(String word)
         {
-            word = word.ToLower();
-            bool succeed = HttpClientWrapper.LearnWord(word);
-            if(succeed)
-            {
-                Common.AddKnownWord(word);
-            } 
-            else
-            {
-                Common.AddIgnoreWords(word);
-            }
+            Task task = Task.Factory.StartNew(() => {
+                word = word.ToLower();
+                bool succeed = HttpClientWrapper.LearnWord(word);
+                if (succeed)
+                {
+                    Common.AddKnownWord(word);
+                }
+                else
+                {
+                    Common.AddIgnoreWords(word);
+                }
+            });
+
         }
 
 

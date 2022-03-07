@@ -64,6 +64,7 @@ namespace Enou
 
         private void loginButton_Click(object sender, RoutedEventArgs e)
         {
+            // todo.. seems there are some bugs here..
             String account = this.textBoxAccount.Text;
             String password = this.passwordBox.Password;
 
@@ -72,20 +73,22 @@ namespace Enou
             if(Common.appSettings.RememberPassword)
             {
                 loginSucceed = HttpClientWrapper.LoginByToken();
-                if(!loginSucceed)
-                {
-                    labelHint.Content = "账号/密码错误，登录失败";
-                    Common.appSettings.EnouAccountToken = String.Empty;
-                    this.passwordBox.Password = String.Empty;
-                }
+
             }
             else
             {
                 loginSucceed = HttpClientWrapper.LoginByPwd(account, password);
             }
 
+            if (!loginSucceed)
+            {
+                labelHint.Content = "账号/密码错误，登录失败";
+                Common.appSettings.EnouAccountToken = String.Empty;
+                this.passwordBox.Password = String.Empty;
+            }
 
-            if(loginSucceed)
+
+            if (loginSucceed)
             {
                 Common.LoadIgnoreWords();
                 Common.LoadKnownWords();
@@ -96,7 +99,7 @@ namespace Enou
                 }
                 Common.appSettings.EnouAccount = account;
                 var mainWindow = new MainWindow();
-                var modifyWordWindow = new LearnWordWindow();
+                var modifyWordWindow = new LearnWordWindow();// do not delete this..
                 mainWindow.Show();
                 this.Close();
             }
